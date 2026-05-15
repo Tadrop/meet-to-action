@@ -38,18 +38,14 @@ class TestDeadLetterQueue:
         assert len(dlq._items) == 1
         assert dlq._items["file-1"].failure_count == 2
 
-    def test_max_retries_marks_permanently_failed(
-        self, dlq: DeadLetterQueue
-    ) -> None:
+    def test_max_retries_marks_permanently_failed(self, dlq: DeadLetterQueue) -> None:
         meta = _meta()
         for _ in range(6):
             dlq.add_failure(meta, "still failing")
         assert dlq._items["file-1"].permanently_failed
         assert dlq.has_permanently_failed()
 
-    def test_due_items_excludes_future_retries(
-        self, dlq: DeadLetterQueue
-    ) -> None:
+    def test_due_items_excludes_future_retries(self, dlq: DeadLetterQueue) -> None:
         dlq.add_failure(_meta(), "error")
         # Just-added items have a future next_retry_at, so none are due.
         assert dlq.due_items() == []
@@ -59,16 +55,12 @@ class TestDeadLetterQueue:
         dlq.add_failure(meta, "error")
         # Backdate the retry time so the item becomes due.
         item = dlq._items["file-1"]
-        item.next_retry_at = (
-            datetime.now(timezone.utc) - timedelta(minutes=1)
-        ).isoformat()
+        item.next_retry_at = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
         due = dlq.due_items()
         assert len(due) == 1
         assert due[0].file_id == "file-1"
 
-    def test_due_items_excludes_permanently_failed(
-        self, dlq: DeadLetterQueue
-    ) -> None:
+    def test_due_items_excludes_permanently_failed(self, dlq: DeadLetterQueue) -> None:
         meta = _meta()
         for _ in range(6):
             dlq.add_failure(meta, "still failing")
@@ -108,9 +100,7 @@ class TestDeadLetterQueue:
 
 class TestFailedTranscript:
     def test_retry_backoff_grows(self) -> None:
-        ft = FailedTranscript(
-            file_id="x", file_name="x", mime_type="text/plain", created_time=""
-        )
+        ft = FailedTranscript(file_id="x", file_name="x", mime_type="text/plain", created_time="")
         ft.failure_count = 1
         ft.schedule_next_retry()
         first = datetime.fromisoformat(ft.next_retry_at)
@@ -123,9 +113,7 @@ class TestFailedTranscript:
         assert third > first
 
     def test_retry_capped_at_24h(self) -> None:
-        ft = FailedTranscript(
-            file_id="x", file_name="x", mime_type="text/plain", created_time=""
-        )
+        ft = FailedTranscript(file_id="x", file_name="x", mime_type="text/plain", created_time="")
         ft.failure_count = 100
         ft.schedule_next_retry()
         retry_at = datetime.fromisoformat(ft.next_retry_at)

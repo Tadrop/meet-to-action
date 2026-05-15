@@ -130,7 +130,7 @@ class HealthChecker:
     def _probe_asana() -> None:
         token = os.getenv("ASANA_ACCESS_TOKEN", "")
         if not token:
-            raise EnvironmentError("ASANA_ACCESS_TOKEN not set")
+            raise OSError("ASANA_ACCESS_TOKEN not set")
         resp = requests.get(
             "https://app.asana.com/api/1.0/users/me",
             headers={"Authorization": f"Bearer {token}"},
@@ -145,9 +145,9 @@ class HealthChecker:
         token = os.getenv("NOTION_TOKEN", "")
         db_id = os.getenv("NOTION_DATABASE_ID", "")
         if not token:
-            raise EnvironmentError("NOTION_TOKEN not set")
+            raise OSError("NOTION_TOKEN not set")
         if not db_id:
-            raise EnvironmentError("NOTION_DATABASE_ID not set")
+            raise OSError("NOTION_DATABASE_ID not set")
         client = Client(auth=token)
         database = client.databases.retrieve(db_id)
 
@@ -179,7 +179,7 @@ class HealthChecker:
     def _probe_anthropic() -> None:
         api_key = os.getenv("ANTHROPIC_API_KEY", "")
         if not api_key:
-            raise EnvironmentError("ANTHROPIC_API_KEY not set")
+            raise OSError("ANTHROPIC_API_KEY not set")
         client = anthropic.Anthropic(api_key=api_key)
         # models.list() is free — no tokens consumed.
         client.models.list()

@@ -18,9 +18,9 @@ from __future__ import annotations
 import logging
 
 from src.dead_letter import DeadLetterQueue
-from src.gcal.enricher import CalendarEnricher
 from src.drive.fetcher import TranscriptFetcher
 from src.drive.watcher import DriveWatcher
+from src.gcal.enricher import CalendarEnricher
 from src.health import HealthChecker, HealthReport
 from src.idempotency import IdempotencyTracker
 from src.llm.claude_client import ClaudeClient
@@ -131,9 +131,7 @@ class MeetingPipeline:
 
     # ── private: per-transcript logic ─────────────────────────────────────────
 
-    def _process_transcript(
-        self, file_meta: dict, *, from_dlq: bool
-    ) -> PipelineResult | None:
+    def _process_transcript(self, file_meta: dict, *, from_dlq: bool) -> PipelineResult | None:
         file_id: str = file_meta["id"]
         file_name: str = file_meta.get("name", "unknown")
         mime_type: str = file_meta.get("mimeType", "text/plain")
@@ -191,9 +189,7 @@ class MeetingPipeline:
         # 5 — If every output failed, the consultant gets nothing — re-queue rather
         # than mark processed, so the next cycle retries when circuits recover.
         any_output_succeeded = (
-            gmail_draft_id is not None
-            or len(asana_task_gids) > 0
-            or notion_page_id is not None
+            gmail_draft_id is not None or len(asana_task_gids) > 0 or notion_page_id is not None
         )
         if not any_output_succeeded:
             logger.error(
@@ -231,9 +227,7 @@ class MeetingPipeline:
 
     # ── output helpers (circuit-breaker-wrapped) ──────────────────────────────
 
-    def _create_gmail_draft(
-        self, analysis: MeetingAnalysis, attendees: list[str]
-    ) -> str | None:
+    def _create_gmail_draft(self, analysis: MeetingAnalysis, attendees: list[str]) -> str | None:
         try:
             return self._cb_gmail.call(
                 self._gmail.create_draft,
@@ -249,11 +243,14 @@ class MeetingPipeline:
 
     def _create_asana_tasks(self, analysis: MeetingAnalysis) -> list[str]:
         try:
-            return self._cb_asana.call(
-                self._asana.create_tasks,
-                analysis.action_items,
-                analysis.meeting_title,
-            ) or []  # type: ignore[return-value]
+            return (
+                self._cb_asana.call(
+                    self._asana.create_tasks,
+                    analysis.action_items,
+                    analysis.meeting_title,
+                )
+                or []
+            )  # type: ignore[return-value]
         except CircuitOpenError as exc:
             logger.warning("Asana circuit open — skipping tasks", extra={"reason": str(exc)})
             return []

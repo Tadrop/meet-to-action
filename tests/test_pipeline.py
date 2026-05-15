@@ -52,14 +52,16 @@ def mock_pipeline(valid_analysis: MeetingAnalysis):
         health.run.return_value = _healthy_report()
 
         watcher = mock_watcher_cls.return_value
-        watcher.poll.return_value = iter([
-            {
-                "id": "file-abc-123",
-                "name": "Q2 Marketing Strategy Review 2026-05-15.txt",
-                "mimeType": "text/plain",
-                "createdTime": "2026-05-15T10:00:00Z",
-            }
-        ])
+        watcher.poll.return_value = iter(
+            [
+                {
+                    "id": "file-abc-123",
+                    "name": "Q2 Marketing Strategy Review 2026-05-15.txt",
+                    "mimeType": "text/plain",
+                    "createdTime": "2026-05-15T10:00:00Z",
+                }
+            ]
+        )
 
         fetcher = mock_fetcher_cls.return_value
         fetcher.fetch.return_value = "Transcript content here."
@@ -94,9 +96,7 @@ def mock_pipeline(valid_analysis: MeetingAnalysis):
 
 
 class TestMeetingPipeline:
-    def test_run_once_returns_results(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_run_once_returns_results(self, mock_pipeline: MeetingPipeline) -> None:
         results = mock_pipeline.run_once()
         assert len(results) == 1
         result = results[0]
@@ -112,18 +112,14 @@ class TestMeetingPipeline:
         mock_pipeline.run_once()
         mock_pipeline._tracker.mark_processed.assert_called_once_with("file-abc-123")
 
-    def test_claude_failure_adds_to_dlq(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_claude_failure_adds_to_dlq(self, mock_pipeline: MeetingPipeline) -> None:
         mock_pipeline._claude.analyse_transcript.side_effect = ValueError("Parse error")
         results = mock_pipeline.run_once()
         assert results == []
         mock_pipeline._dlq.add_failure.assert_called_once()
         mock_pipeline._tracker.mark_processed.assert_not_called()
 
-    def test_fetch_failure_adds_to_dlq(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_fetch_failure_adds_to_dlq(self, mock_pipeline: MeetingPipeline) -> None:
         mock_pipeline._fetcher.fetch.side_effect = Exception("Drive 503")
         results = mock_pipeline.run_once()
         assert results == []
@@ -151,9 +147,7 @@ class TestMeetingPipeline:
         assert results[0].notion_page_id == "page-id-abc"
         mock_pipeline._tracker.mark_processed.assert_called_once()
 
-    def test_critical_service_down_skips_cycle(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_critical_service_down_skips_cycle(self, mock_pipeline: MeetingPipeline) -> None:
         unhealthy = HealthReport(
             statuses=[
                 ServiceStatus(name="drive", healthy=False, latency_ms=0, error="503"),
@@ -166,9 +160,7 @@ class TestMeetingPipeline:
         mock_pipeline._watcher.poll.assert_not_called()
         mock_pipeline._claude.analyse_transcript.assert_not_called()
 
-    def test_dlq_retry_processed_and_removed(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_dlq_retry_processed_and_removed(self, mock_pipeline: MeetingPipeline) -> None:
         from src.dead_letter import FailedTranscript
 
         dlq_item = FailedTranscript(
@@ -187,9 +179,7 @@ class TestMeetingPipeline:
         assert results[0].file_id == "file-retry-1"
         mock_pipeline._dlq.remove.assert_called_once_with("file-retry-1")
 
-    def test_empty_poll_returns_empty_list(
-        self, mock_pipeline: MeetingPipeline
-    ) -> None:
+    def test_empty_poll_returns_empty_list(self, mock_pipeline: MeetingPipeline) -> None:
         mock_pipeline._watcher.poll.return_value = iter([])
         results = mock_pipeline.run_once()
         assert results == []

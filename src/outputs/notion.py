@@ -24,11 +24,11 @@ class NotionMeetingLogger:
     def __init__(self) -> None:
         token = os.getenv("NOTION_TOKEN")
         if not token:
-            raise EnvironmentError("NOTION_TOKEN environment variable is not set")
+            raise OSError("NOTION_TOKEN environment variable is not set")
 
         self._database_id = os.getenv("NOTION_DATABASE_ID", "")
         if not self._database_id:
-            raise EnvironmentError("NOTION_DATABASE_ID environment variable is not set")
+            raise OSError("NOTION_DATABASE_ID environment variable is not set")
 
         self._client = Client(auth=token)
 
@@ -70,12 +70,8 @@ class NotionMeetingLogger:
             return value[:2000]
 
         properties = {
-            "Title": {
-                "title": [{"text": {"content": analysis.meeting_title}}]
-            },
-            "Date": {
-                "date": {"start": analysis.date}
-            },
+            "Title": {"title": [{"text": {"content": analysis.meeting_title}}]},
+            "Date": {"date": {"start": analysis.date}},
             "Summary": {
                 "rich_text": [{"text": {"content": _safe_text(analysis.summary, "Summary")}}]
             },
@@ -85,9 +81,7 @@ class NotionMeetingLogger:
             "Action Items": {
                 "rich_text": [{"text": {"content": _safe_text(action_items_text, "Action Items")}}]
             },
-            "Status": {
-                "select": {"name": "Pending Review"}
-            },
+            "Status": {"select": {"name": "Pending Review"}},
         }
 
         try:

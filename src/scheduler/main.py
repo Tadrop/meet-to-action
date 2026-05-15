@@ -11,7 +11,7 @@ import logging
 import os
 import signal
 import sys
-import time
+from datetime import datetime, timezone
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -21,10 +21,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.logging_config import configure_logging  # noqa: E402 — must follow load_dotenv
-from src.pipeline import MeetingPipeline          # noqa: E402
+from src.pipeline import MeetingPipeline  # noqa: E402
 
 configure_logging()
 logger = logging.getLogger(__name__)
+
 
 def _parse_poll_interval() -> int:
     raw = os.getenv("POLL_INTERVAL_MINUTES", "5")
@@ -54,7 +55,9 @@ def _run_pipeline(pipeline: MeetingPipeline) -> None:
         )
     except Exception as exc:
         # Never crash the scheduler — log and wait for the next interval.
-        logger.error("Unhandled exception in pipeline run", extra={"error": str(exc)}, exc_info=True)
+        logger.error(
+            "Unhandled exception in pipeline run", extra={"error": str(exc)}, exc_info=True
+        )
 
 
 def main() -> None:
@@ -73,7 +76,7 @@ def main() -> None:
         id="meeting_pipeline",
         name="Meeting Notes Pipeline",
         # Run once immediately at startup, then on interval.
-        next_run_time=__import__("datetime").datetime.utcnow(),
+        next_run_time=datetime.now(timezone.utc),
     )
 
     def _shutdown(signum: int, frame: object) -> None:

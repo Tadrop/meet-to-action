@@ -92,11 +92,7 @@ class CalendarEnricher:
         events.sort(key=lambda e: self._delta_to(e, created_dt))
         event = events[0]
 
-        attendees = [
-            a.get("email", "")
-            for a in event.get("attendees", [])
-            if a.get("email")
-        ]
+        attendees = [a.get("email", "") for a in event.get("attendees", []) if a.get("email")]
         context = MeetingContext(
             title=event.get("summary", "Untitled Meeting"),
             attendees=attendees,

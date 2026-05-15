@@ -18,7 +18,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -44,9 +44,7 @@ class FailedTranscript:
     def schedule_next_retry(self) -> None:
         hours = _BASE_RETRY_HOURS * (2 ** (self.failure_count - 1))
         hours = min(hours, _MAX_RETRY_HOURS)
-        self.next_retry_at = (
-            datetime.now(timezone.utc) + timedelta(hours=hours)
-        ).isoformat()
+        self.next_retry_at = (datetime.now(timezone.utc) + timedelta(hours=hours)).isoformat()
 
     def is_due(self) -> bool:
         if self.permanently_failed or not self.next_retry_at:

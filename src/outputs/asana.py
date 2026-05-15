@@ -25,7 +25,7 @@ class AsanaTaskCreator:
     def __init__(self) -> None:
         token = os.getenv("ASANA_ACCESS_TOKEN")
         if not token:
-            raise EnvironmentError("ASANA_ACCESS_TOKEN environment variable is not set")
+            raise OSError("ASANA_ACCESS_TOKEN environment variable is not set")
 
         self._workspace_gid = os.getenv("ASANA_WORKSPACE_GID", "")
         self._project_gid = os.getenv("ASANA_PROJECT_GID", "")
@@ -104,9 +104,7 @@ class AsanaTaskCreator:
         )
 
         try:
-            response = self._session.post(
-                f"{_ASANA_BASE}/tasks", json=payload, timeout=30
-            )
+            response = self._session.post(f"{_ASANA_BASE}/tasks", json=payload, timeout=30)
             response.raise_for_status()
         except requests.HTTPError as exc:
             logger.error(

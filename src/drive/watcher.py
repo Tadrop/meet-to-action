@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Iterator
+from collections.abc import Iterator
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -86,18 +86,12 @@ class DriveWatcher:
             "and mimeType = 'application/vnd.google-apps.folder' "
             "and trashed = false"
         )
-        result = (
-            self._service.files()
-            .list(q=query, fields="files(id, name)", pageSize=1)
-            .execute()
-        )
+        result = self._service.files().list(q=query, fields="files(id, name)", pageSize=1).execute()
         files = result.get("files", [])
         return files[0]["id"] if files else None
 
     def _list_transcript_files(self, folder_id: str) -> list[dict]:
-        mime_filter = " or ".join(
-            f"mimeType = '{m}'" for m in _TRANSCRIPT_MIMES
-        )
+        mime_filter = " or ".join(f"mimeType = '{m}'" for m in _TRANSCRIPT_MIMES)
         query = f"'{folder_id}' in parents and ({mime_filter}) and trashed = false"
 
         all_files: list[dict] = []

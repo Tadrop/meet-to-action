@@ -24,9 +24,7 @@ class GmailDraftCreator:
         self._service = build("gmail", "v1", credentials=creds)
 
     @retry(max_attempts=3, base_delay=2.0, exceptions=(HttpError,))
-    def create_draft(
-        self, draft: EmailDraft, to_addresses: list[str]
-    ) -> str:
+    def create_draft(self, draft: EmailDraft, to_addresses: list[str]) -> str:
         """Create a Gmail DRAFT and return the draft ID.
 
         The draft is saved to the authenticated user's Drafts folder.

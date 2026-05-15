@@ -41,7 +41,7 @@ class ClaudeClient:
     def __init__(self) -> None:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
-            raise EnvironmentError("ANTHROPIC_API_KEY environment variable is not set")
+            raise OSError("ANTHROPIC_API_KEY environment variable is not set")
         self._client = anthropic.Anthropic(api_key=api_key)
         self._model = os.getenv("CLAUDE_MODEL", _DEFAULT_MODEL)
 

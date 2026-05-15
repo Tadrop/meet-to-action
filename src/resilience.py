@@ -17,9 +17,10 @@ import functools
 import logging
 import random
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Callable, Type, TypeVar
+from typing import TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -31,13 +32,14 @@ def retry(
     base_delay: float = 2.0,
     max_delay: float = 60.0,
     backoff_factor: float = 2.0,
-    exceptions: tuple[Type[Exception], ...] = (Exception,),
+    exceptions: tuple[type[Exception], ...] = (Exception,),
 ) -> Callable[[F], F]:
     """Decorator: retry a function with exponential backoff and ±20% jitter.
 
     Only retries on the specified exception types. Permanent errors (e.g. 401,
     403, 404) should NOT be listed — let them propagate immediately.
     """
+
     def decorator(func: F) -> F:
         @functools.wraps(func)
         def wrapper(*args: object, **kwargs: object) -> object:
@@ -83,8 +85,8 @@ def retry(
 
 
 class _CircuitState(Enum):
-    CLOSED = "closed"        # Normal — calls pass through
-    OPEN = "open"            # Failing — calls are rejected immediately
+    CLOSED = "closed"  # Normal — calls pass through
+    OPEN = "open"  # Failing — calls are rejected immediately
     HALF_OPEN = "half_open"  # Recovery probe — one call allowed through
 
 
@@ -125,8 +127,7 @@ class CircuitBreaker:
             else:
                 remaining = round(self.recovery_timeout - elapsed)
                 raise CircuitOpenError(
-                    f"Circuit '{self.name}' is OPEN. "
-                    f"Recovery probe in {remaining}s."
+                    f"Circuit '{self.name}' is OPEN. Recovery probe in {remaining}s."
                 )
 
         try:

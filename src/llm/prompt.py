@@ -7,7 +7,7 @@ from typing import Any
 SYSTEM_PROMPT = """You are an expert meeting analyst for a professional consulting firm.
 
 Your job is to read a meeting transcript and produce:
-1. A concise executive summary (3–5 sentences)
+1. A concise executive summary (3-5 sentences)
 2. A list of decisions made during the meeting
 3. Action items — each must have an owner (name + email if available), a
    specific deadline (exact date, not "next week"), and a verbatim supporting
@@ -44,7 +44,7 @@ ANALYSIS_TOOL: dict[str, Any] = {
             },
             "summary": {
                 "type": "string",
-                "description": "Executive summary of the meeting in 3–5 sentences",
+                "description": "Executive summary of the meeting in 3-5 sentences",
             },
             "decisions": {
                 "type": "array",
