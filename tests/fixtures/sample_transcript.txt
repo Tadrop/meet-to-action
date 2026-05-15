@@ -1,0 +1,65 @@
+Meeting Title: Q2 Marketing Strategy Review
+Date: 2026-05-15
+Attendees: Alex Chen (alex.chen@meridian.com), Sarah Miller (sarah.miller@meridian.com), Jordan Lee (jordan.lee@meridian.com), Marcus Webb (marcus.webb@meridian.com)
+
+---
+
+[00:00] Alex Chen: Good morning everyone. Thanks for joining the Q2 Marketing Strategy Review. Let's get started — we have a lot to cover.
+
+[00:15] Sarah Miller: Morning Alex. I've pulled up the campaign performance dashboard. Want me to walk through the numbers first?
+
+[00:22] Alex Chen: Yes, please go ahead Sarah.
+
+[00:25] Sarah Miller: So, looking at Q1 results — our digital ad spend came in at $48,000, and we generated 312 qualified leads. That's a cost-per-lead of about $154. Our target was $130, so we're running 18% above target. The main driver was the LinkedIn campaign underperforming — CTR was 0.4% versus the 0.9% we projected.
+
+[00:58] Marcus Webb: That LinkedIn number doesn't surprise me. The creative we used was adapted from the print campaign. It didn't land well in a digital feed. We need purpose-built social creative going forward.
+
+[01:12] Jordan Lee: Agreed. I flagged that in the retrospective doc I sent last month. If we're serious about LinkedIn as a channel, we need a dedicated creative sprint — at least two weeks of design time.
+
+[01:24] Alex Chen: Okay, so that's a clear action. Jordan, can you own a creative brief for the LinkedIn refresh? I'd like to see something by end of May.
+
+[01:33] Jordan Lee: Sure, I'll have a brief drafted and circulated for feedback by May 30th.
+
+[01:40] Sarah Miller: The email nurture sequence is actually outperforming — open rates at 34%, which is above our 28% benchmark. The three-email drip we built around the white paper is working. I'd recommend we replicate that structure for the product launch sequence in Q3.
+
+[01:58] Alex Chen: Good call. Let's make that a formal decision — we adopt the white paper drip structure as the template for Q3 nurture sequences. Sarah, log that in the decisions doc.
+
+[02:08] Sarah Miller: Will do.
+
+[02:10] Marcus Webb: One thing we haven't addressed — the website landing page for the campaign. Bounce rate is 72%. That's way too high. People are clicking through and immediately leaving. The page isn't matching the ad promise.
+
+[02:25] Alex Chen: What would it take to fix it?
+
+[02:28] Marcus Webb: We need a copy rewrite and new above-the-fold layout. I can draft a revised wireframe. Realistically, with dev time, we're looking at three weeks to ship it.
+
+[02:38] Alex Chen: Then let's do it. Marcus, own the wireframe and copy brief. Can you have that to the dev team by May 22nd?
+
+[02:47] Marcus Webb: Yes, May 22nd works for the brief. I'll need Jordan to review the copy before it goes to dev.
+
+[02:54] Jordan Lee: Put me on the review — give me 48 hours once Marcus sends the draft.
+
+[03:00] Alex Chen: Great. Let's confirm the Q3 budget before we wrap. The proposal on the table is $65,000 for digital across the quarter. Do we have alignment on that number?
+
+[03:12] Sarah Miller: I'm comfortable with $65k if we reallocate away from LinkedIn and toward SEM and retargeting until the LinkedIn creative is refreshed.
+
+[03:22] Marcus Webb: Makes sense. LinkedIn should drop to maybe 15% of budget, down from 30%, until we validate the new creative.
+
+[03:30] Jordan Lee: Agreed. Let's revisit LinkedIn allocation after the creative brief is approved.
+
+[03:36] Alex Chen: Okay, so we have a decision — Q3 digital budget approved at $65,000 with LinkedIn reduced to 15% allocation pending creative refresh. I'll document that.
+
+[03:47] Alex Chen: One last item. We need to set up a weekly check-in cadence for the Q3 campaign. Can someone own scheduling a recurring 30-minute Monday stand-up starting June 2nd?
+
+[03:58] Sarah Miller: I'll set that up. I'll send a calendar invite to everyone by this Friday, May 17th.
+
+[04:06] Alex Chen: Perfect. Okay — to summarize the decisions and actions: We're reducing LinkedIn budget to 15%, Jordan is drafting the creative brief by May 30th, Marcus is delivering the landing page wireframe by May 22nd, Sarah is scheduling the weekly stand-up by May 17th, and we've adopted the white paper drip as our Q3 nurture template. Any final questions?
+
+[04:28] Sarah Miller: No, I think we're good.
+
+[04:30] Marcus Webb: Same here.
+
+[04:31] Jordan Lee: All clear from me.
+
+[04:33] Alex Chen: Great work everyone. Talk next week.
+
+[04:36] — Meeting ended —

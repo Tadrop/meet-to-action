@@ -1,0 +1,18 @@
+services:
+  meeting-agent:
+    build: .
+    image: meeting-notes-agent:latest
+    container_name: meeting-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Persist OAuth token, idempotency state, and dead letter queue across
+      # container restarts. credentials.json must already exist in ./state.
+      - ./state:/app/state
+    # Optional: stream logs to journald or your log driver of choice.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
